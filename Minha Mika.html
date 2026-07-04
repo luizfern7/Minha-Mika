@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para minha princesinha Mika</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Georgia", serif;
+      background: linear-gradient(160deg, #fff1f6, #ffe8f0, #f7eaff, #fff8ec);
+      color: #6b3b4a;
+      overflow-x: hidden;
+    }
+
+    .background-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -40px;
+      color: rgba(255, 120, 160, 0.35);
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .screen {
+      min-height: 100vh;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .intro.hidden {
+      opacity: 0;
+      transform: translateY(-30px);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .crown {
+      font-size: 48px;
+      margin-bottom: 18px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        filter: drop-shadow(0 0 3px #ffd6a5);
+      }
+      to {
+        filter: drop-shadow(0 0 14px #ffb6c1);
+      }
+    }
+
+    .intro-card {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 180, 200, 0.5);
+      border-radius: 28px;
+      padding: 34px 24px;
+      box-shadow: 0 18px 45px rgba(180, 90, 120, 0.18);
+    }
+
+    .intro h1 {
+      font-size: 2rem;
+      color: #b85c7a;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+
+    .intro p {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 28px;
+      color: #7b4b5a;
+    }
+
+    .open-btn {
+      border: none;
+      background: linear-gradient(135deg, #ff8fb3, #d988ff);
+      color: white;
+      padding: 15px 26px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(210, 100, 150, 0.35);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .open-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 14px 32px rgba(210, 100, 150, 0.45);
+    }
+
+    .letter-section {
+      display: none;
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+      padding: 34px 0;
+      animation: openLetter 1s ease forwards;
+    }
+
+    .letter-section.show {
+      display: block;
+    }
+
+    @keyframes openLetter {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .letter {
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 30px;
+      padding: 28px 22px;
+      box-shadow: 0 20px 50px rgba(170, 80, 120, 0.2);
+      border: 1px solid rgba(255, 190, 210, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .letter::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px dashed rgba(210, 120, 160, 0.35);
+      border-radius: 24px;
+      pointer-events: none;
+    }
+
+    .letter-header {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .letter-header .small-crown {
+      font-size: 36px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .letter-header h2 {
+      color: #b85c7a;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #8b5d6a;
+      font-style: italic;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 22px 0;
+      color: #d8799e;
+      letter-spacing: 8px;
+      font-size: 1rem;
+    }
+
+    .poem {
+      position: relative;
+      z-index: 1;
+    }
+
+    .poem p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .final-message {
+      margin-top: 28px;
+      text-align: center;
+      background: linear-gradient(135deg, #fff1f6, #f8e9ff);
+      padding: 22px 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 180, 210, 0.7);
+    }
+
+    .final-message h3 {
+      color: #b85c7a;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .signature {
+      margin-top: 14px;
+      font-size: 1.15rem;
+      color: #9b4d67;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 0.9rem;
+      color: #8b5d6a;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #ffd1dc;
+      border-radius: 50%;
+      animation: sparkle 1.8s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% {
+        opacity: 0.2;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.6);
+      }
+    }
+
+    .sparkle.one {
+      top: 40px;
+      left: 34px;
+    }
+
+    .sparkle.two {
+      top: 90px;
+      right: 42px;
+      animation-delay: 0.4s;
+    }
+
+    .sparkle.three {
+      bottom: 80px;
+      left: 50px;
+      animation-delay: 0.8s;
+    }
+
+    @media (max-width: 380px) {
+      .screen {
+        padding: 18px;
+      }
+
+      .intro h1 {
+        font-size: 1.7rem;
+      }
+
+      .letter {
+        padding: 24px 18px;
+      }
+
+      .poem p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background-hearts" id="backgroundHearts"></div>
+
+  <main class="screen">
+    <section class="intro" id="intro">
+      <div class="intro-card">
+        <div class="crown">👑</div>
+        <h1>Uma cartinha para minha princesinha Mika</h1>
+        <p>
+          Fiz essa pequena homenagem com todo o meu amor,
+          para lembrar o quanto você é especial para mim.
+        </p>
+        <button class="open-btn" id="openLetter">
+          Abrir minha cartinha 💌
+        </button>
+      </div>
+    </section>
+
+    <section class="letter-section" id="letterSection">
+      <article class="letter">
+        <span class="sparkle one"></span>
+        <span class="sparkle two"></span>
+        <span class="sparkle three"></span>
+
+        <header class="letter-header">
+          <span class="small-crown">👑</span>
+          <h2>Para minha Mika</h2>
+          <p class="subtitle">A mais bela entre as princesas</p>
+        </header>
+
+        <div class="divider">♡ ♡ ♡</div>
+
+        <div class="poem">
+          <p>
+            Minha princesinha, minha Mika, como você é linda, como é bela!
+            Mais bela que as flores, mais doce que o mel. Seu pequeno e
+            delicado corpo é o mais lindo entre todas as mulheres. Nem as
+            modelos mais famosas são tão formosas quanto a minha amada,
+            a mais bela entre as princesas, a mais fofa.
+          </p>
+
+          <p>
+            Ainda me lembro de quando eu apenas a conhecia de longe.
+            Admirava sua beleza e imaginava que certamente outros já
+            estivessem tentando conquistar o seu amor. Felizmente, eu estava
+            enganado. Ainda ninguém havia se arriscado; seu coração ainda
+            não tinha sido conquistado.
+          </p>
+
+          <p>
+            Que Deus me dê a mesma paciência que me concedeu quando fui
+            te conquistar. Foram quatro meses sem sequer poder vê-la
+            pessoalmente kkkkk. Que Ele continue me ajudando a esperar
+            o tempo certo, para que possamos viver cada etapa que preparou
+            para nós.
+          </p>
+
+          <p>
+            Que Deus me dê paciência para trabalhar, me esforçar e construir
+            o nosso futuro, até que chegue o grande dia. O dia em que,
+            diante do altar, depois de pronunciarmos nossos votos, eu possa
+            ouvir o seu tão esperado “sim” e, finalmente, chamá-la de minha
+            esposa.
+          </p>
+
+          <p>
+            Como eu amo você, minha princesinha. Oro para que Deus nos
+            conduza em cada passo, fortaleça o nosso amor e nos permita
+            viver uma vida inteira juntos, sempre com Ele no centro de tudo.
+            ❤️
+          </p>
+        </div>
+
+        <div class="divider">♡ ♡ ♡</div>
+
+        <div class="final-message">
+          <h3>Eu te amo, minha princesinha</h3>
+          <p>
+            Que Deus continue escrevendo a nossa história com amor,
+            paciência, carinho e propósito.
+          </p>
+          <div class="signature">Com amor, Luiz 💗</div>
+        </div>
+      </article>
+
+      <p class="footer">
+        Feito especialmente para você, Mika.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const openButton = document.getElementById("openLetter");
+    const intro = document.getElementById("intro");
+    const letterSection = document.getElementById("letterSection");
+    const backgroundHearts = document.getElementById("backgroundHearts");
+
+    openButton.addEventListener("click", () => {
+      intro.classList.add("hidden");
+
+      setTimeout(() => {
+        letterSection.classList.add("show");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }, 500);
+    });
+
+    function createHeart() {
+      const heart = document.createElement("span");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤";
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 18 + 12 + "px";
+      heart.style.animationDuration = Math.random() * 5 + 6 + "s";
+      heart.style.animationDelay = Math.random() * 2 + "s";
+
+      backgroundHearts.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 9000);
+    }
+
+    setInterval(createHeart, 500);
+
+    for (let i = 0; i < 14; i++) {
+      setTimeout(createHeart, i * 250);
+    }
+  </script>
+</body>
+</html>
